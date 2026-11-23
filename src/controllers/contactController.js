@@ -15,10 +15,54 @@ exports.submit = async (req, res, next) => {
   }
 };
 
+/**
+ * GET /api/contact - admin only. Paginated, filterable listing of every
+ * "Contact Us" submission, mirroring the same page/limit + per-column
+ * filter pattern used by GET /api/itineraries/admin so both admin tabs
+ * behave consistently.
+ */
 exports.getAll = async (req, res, next) => {
   try {
-    const inquiries = await Inquiry.findAll({ order: [['createdAt', 'DESC']] });
-    res.json(inquiries);
+    const {
+      page = '1',
+      limit = '10',
+      name = '',
+      email = '',
+      phone = '',
+      subject = '',
+      status = '', // new | contacted | closed | ''
+      q = '', // free-text search across the message body
+      dateFrom = '',
+      dateTo = '',
+    } = req.query;
+
+    const inquiries = await Inquiry.findAll({
+      order: [['createdAt', 'DESC']],
+      limit: 5000,
+    });
+
+    const norm = (v) => String(v ?? '').toLowerCase();
+
+    const filtered = inquiries.filter((inq) => {
+      if (name && !norm(inq.name).includes(norm(name))) return false;
+      if (email && !norm(inq.email).includes(norm(email))) return false;
+      if (phone && !norm(inq.phone).includes(norm(phone))) return false;
+      if (subject && !norm(inq.subject).includes(norm(subject))) return false;
+      if (status && inq.status !== status) return false;
+      if (q && !norm(inq.message).includes(norm(q))) return false;
+      if (dateFrom && new Date(inq.createdAt) < new Date(dateFrom)) return false;
+      if (dateTo && new Date(inq.createdAt) > new Date(new Date(dateTo).getTime() + 24 * 60 * 60 * 1000 - 1)) return false;
+      return true;
+    });
+
+    const total = filtered.length;
+    const pageNum = Math.max(1, parseInt(page, 10) || 1);
+    const limitNum = Math.max(1, Math.min(100, parseInt(limit, 10) || 10));
+    const totalPages = Math.max(1, Math.ceil(total / limitNum));
+    const start = (pageNum - 1) * limitNum;
+    const data = filtered.slice(start, start + limitNum);
+
+    res.json({ data, total, page: pageNum, limit: limitNum, totalPages });
   } catch (err) {
     next(err);
   }

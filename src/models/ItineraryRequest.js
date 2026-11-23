@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const { jsonGetter } = require('../utils/jsonField');
 
 /**
  * ItineraryRequest stores every submission of the "Create Your Own
@@ -20,6 +21,23 @@ const ItineraryRequest = sequelize.define('ItineraryRequest', {
     type: DataTypes.STRING(120),
     allowNull: false,
   },
+  contactNumber: {
+    // WhatsApp contact number, so our team can follow up on a match.
+    // defaultValue: '' lets `sync({ alter: true })` add this as a NOT NULL
+    // column even on a table that already has rows from before this field
+    // existed (they backfill to '' instead of the ALTER failing).
+    type: DataTypes.STRING(30),
+    allowNull: false,
+    defaultValue: '',
+  },
+  passportNo: {
+    // Collected up front so visa/permit arrangements can start once a
+    // matched itinerary turns into a real booking. Sensitive - only ever
+    // exposed to admin accounts (see itineraryController.adminList).
+    type: DataTypes.STRING(30),
+    allowNull: false,
+    defaultValue: '',
+  },
   adults: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -39,6 +57,7 @@ const ItineraryRequest = sequelize.define('ItineraryRequest', {
     type: DataTypes.JSON,
     allowNull: false,
     defaultValue: [],
+    get: jsonGetter('locationPreferences', []),
   },
   travelMode: {
     type: DataTypes.ENUM('public_transport', 'tuk_tuk', 'car', 'van'),
@@ -52,6 +71,7 @@ const ItineraryRequest = sequelize.define('ItineraryRequest', {
     type: DataTypes.JSON,
     allowNull: false,
     defaultValue: [],
+    get: jsonGetter('matchedTemplateIds', []),
   },
 }, {
   tableName: 'itinerary_requests',

@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const { jsonGetter } = require('../utils/jsonField');
 
 const Tour = sequelize.define('Tour', {
   id: {
@@ -40,16 +41,19 @@ const Tour = sequelize.define('Tour', {
     type: DataTypes.JSON,
     allowNull: true,
     defaultValue: [],
+    get: jsonGetter('images', []),
   },
   highlights: {
     type: DataTypes.JSON,
     allowNull: true,
     defaultValue: [],
+    get: jsonGetter('highlights', []),
   },
   dayPlan: {
     type: DataTypes.JSON,
     allowNull: true,
     defaultValue: [],
+    get: jsonGetter('dayPlan', []),
   },
   featured: {
     type: DataTypes.BOOLEAN,

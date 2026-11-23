@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator');
-const { ItineraryTemplate, ItineraryRequest } = require('../models');
+const { ItineraryTemplate, ItineraryRequest, User } = require('../models');
 const { matchItineraries } = require('../utils/itineraryMatcher');
 
 const VALID_LOCATIONS = ['coastal', 'hill_country', 'traditional'];
@@ -7,11 +7,10 @@ const VALID_MODES = ['public_transport', 'tuk_tuk', 'car', 'van'];
 
 /**
  * POST /api/itineraries/build
- * Accepts the "Create Your Own Itinerary" form, scores it against the
- * seeded ItineraryTemplate catalog and returns the 5 best matches.
- * Works for both guests and logged-in users (optionalAuth). When a user
- * is logged in, the request + matches are linked to their account so they
- * can revisit it from the dashboard.
+ * Requires login (protect middleware). Accepts the "Create Your Own
+ * Itinerary" form, scores it against the seeded ItineraryTemplate catalog
+ * and returns the 5 best matches. The request + matches are linked to the
+ * logged-in user's account so they can revisit it from the dashboard.
  */
 exports.build = async (req, res, next) => {
   try {
@@ -22,6 +21,8 @@ exports.build = async (req, res, next) => {
 
     const {
       name,
+      contactNumber,
+      passportNo,
       adults,
       children = 0,
       hasDrivingLicense = false,
@@ -53,8 +54,10 @@ exports.build = async (req, res, next) => {
     const matchedTemplateIds = matches.map((m) => m.template.id);
 
     const savedRequest = await ItineraryRequest.create({
-      userId: req.user ? req.user.id : null,
+      userId: req.user.id,
       name,
+      contactNumber: contactNumber.trim(),
+      passportNo: passportNo.trim().toUpperCase(),
       adults: preferences.adults,
       children: preferences.children,
       hasDrivingLicense: preferences.hasDrivingLicense,
@@ -148,6 +151,106 @@ exports.getMine = async (req, res, next) => {
     }));
 
     res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * GET /api/itineraries/admin - admin only. Paginated, filterable listing of
+ * every "Create Your Own Itinerary" submission (guests included).
+ *
+ * Filtering happens in-memory after one bounded query rather than as
+ * per-column SQL WHERE clauses. That's a deliberate trade-off: several
+ * columns here (locationPreferences, matchedTemplateIds) are JSON arrays,
+ * and this project also runs on MariaDB, where JSON is just a LONGTEXT
+ * alias with no native array-containment operators - so a single filtering
+ * strategy that works identically on both plain columns and JSON-array
+ * columns, and on both MySQL and MariaDB, is worth more here than raw SQL
+ * push-down. The `limit: 5000` cap keeps this bounded; if this table grows
+ * far beyond that in production, the flat-column filters (name, contact
+ * number, passport no, travel mode, etc.) should move to real SQL WHERE
+ * clauses first.
+ */
+exports.adminList = async (req, res, next) => {
+  try {
+    const {
+      page = '1',
+      limit = '10',
+      name = '',
+      contactNumber = '',
+      passportNo = '',
+      travelMode = '',
+      hasDrivingLicense = '', // 'true' | 'false' | ''
+      locationPreference = '', // coastal | hill_country | traditional | ''
+      adults = '',
+      children = '',
+      minBudget = '',
+      maxBudget = '',
+      dateFrom = '',
+      dateTo = '',
+      submittedBy = '',
+    } = req.query;
+
+    const requests = await ItineraryRequest.findAll({
+      include: [{ model: User, as: 'user', attributes: ['id', 'name', 'email'] }],
+      order: [['createdAt', 'DESC']],
+      limit: 5000,
+    });
+
+    const norm = (v) => String(v ?? '').toLowerCase();
+
+    const filtered = requests.filter((r) => {
+      if (name && !norm(r.name).includes(norm(name))) return false;
+      if (contactNumber && !norm(r.contactNumber).includes(norm(contactNumber))) return false;
+      if (passportNo && !norm(r.passportNo).includes(norm(passportNo))) return false;
+      if (travelMode && r.travelMode !== travelMode) return false;
+      if (hasDrivingLicense !== '' && r.hasDrivingLicense !== (hasDrivingLicense === 'true')) return false;
+      if (locationPreference && !(r.locationPreferences || []).includes(locationPreference)) return false;
+      if (adults !== '' && Number(r.adults) !== Number(adults)) return false;
+      if (children !== '' && Number(r.children) !== Number(children)) return false;
+      if (minBudget !== '' && Number(r.budget) < Number(minBudget)) return false;
+      if (maxBudget !== '' && Number(r.budget) > Number(maxBudget)) return false;
+      if (dateFrom && new Date(r.createdAt) < new Date(dateFrom)) return false;
+      if (dateTo && new Date(r.createdAt) > new Date(new Date(dateTo).getTime() + 24 * 60 * 60 * 1000 - 1)) return false;
+      if (submittedBy) {
+        const submitterText = r.user ? `${r.user.name} ${r.user.email}` : 'guest';
+        if (!norm(submitterText).includes(norm(submittedBy))) return false;
+      }
+      return true;
+    });
+
+    const total = filtered.length;
+    const pageNum = Math.max(1, parseInt(page, 10) || 1);
+    const limitNum = Math.max(1, Math.min(100, parseInt(limit, 10) || 10));
+    const totalPages = Math.max(1, Math.ceil(total / limitNum));
+    const start = (pageNum - 1) * limitNum;
+    const pageItems = filtered.slice(start, start + limitNum);
+
+    // Resolve the matched itinerary template ids on this page into titles.
+    const templateIds = [...new Set(pageItems.flatMap((r) => r.matchedTemplateIds || []))];
+    const templates = templateIds.length
+      ? await ItineraryTemplate.findAll({ where: { id: templateIds }, attributes: ['id', 'title'] })
+      : [];
+    const templateMap = new Map(templates.map((t) => [t.id, t.title]));
+
+    const data = pageItems.map((r) => ({
+      id: r.id,
+      name: r.name,
+      contactNumber: r.contactNumber,
+      passportNo: r.passportNo,
+      adults: r.adults,
+      children: r.children,
+      hasDrivingLicense: r.hasDrivingLicense,
+      locationPreferences: r.locationPreferences,
+      travelMode: r.travelMode,
+      budget: r.budget,
+      matchedTitles: (r.matchedTemplateIds || []).map((id) => templateMap.get(id)).filter(Boolean),
+      submittedBy: r.user ? `${r.user.name} (${r.user.email})` : 'Guest',
+      createdAt: r.createdAt,
+    }));
+
+    res.json({ data, total, page: pageNum, limit: limitNum, totalPages });
   } catch (err) {
     next(err);
   }

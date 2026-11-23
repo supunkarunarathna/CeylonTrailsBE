@@ -23,65 +23,146 @@ const destinations = [
     name: 'Galle',
     slug: 'galle',
     region: 'coastal',
-    description: 'A UNESCO World Heritage fort city on the southern coast, famed for its Dutch colonial ramparts, boutique cafes and sunset ocean views.',
-    image: 'https://images.unsplash.com/photo-1586183189334-1a1a1a2b1b1a?q=80&w=1200',
-    highlights: ['Galle Fort ramparts', 'Lighthouse', 'Boutique shopping', 'Sunset walks'],
+    description: 'A UNESCO World Heritage fort city on the southern coast, famed for its Dutch colonial ramparts, boutique cafes and sunset ocean views. Cobbled streets wind past centuries-old churches, mosques and merchant houses that have been lovingly restored into galleries, guesthouses and cafes.',
+    image: 'https://picsum.photos/seed/ceylon-trails-galle-1/1200/800',
+    images: [
+      'https://picsum.photos/seed/ceylon-trails-galle-1/1200/800',
+      'https://picsum.photos/seed/ceylon-trails-galle-2/1200/800',
+      'https://picsum.photos/seed/ceylon-trails-galle-3/1200/800',
+      'https://picsum.photos/seed/ceylon-trails-galle-4/1200/800',
+    ],
+    famousFor: ['UNESCO World Heritage fort walls', 'Dutch colonial architecture', 'The Galle Lighthouse', 'Boutique shopping and cafes'],
+    activities: ['Walk the fort ramparts at sunset', 'Browse boutique and antique shops', 'Visit the Maritime Archaeology Museum', 'Enjoy rooftop dining with ocean views', 'Day trips to nearby turtle hatcheries'],
+    emergencyContacts: {
+      hospital: { name: 'Galle National Hospital (Karapitiya)', note: 'Main government teaching hospital serving the Galle area' },
+      policeStation: { name: 'Galle Police Station', note: 'Main police station for the Galle Fort and city area' },
+    },
   },
   {
     name: 'Mirissa',
     slug: 'mirissa',
     region: 'coastal',
-    description: 'A laid-back beach town known for whale watching, palm-fringed sands and a relaxed surf scene.',
+    description: 'A laid-back beach town known for whale watching, palm-fringed sands and a relaxed surf scene. By day the harbour buzzes with fishing boats and whale-watching cruises; by night, beachfront shacks light up with lanterns and seafood barbecues.',
     image: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=1200',
-    highlights: ['Whale watching', 'Coconut Tree Hill', 'Surfing', 'Beach shacks'],
+    images: [
+      'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=1200',
+      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=1200',
+      'https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?q=80&w=1200',
+    ],
+    famousFor: ['Blue whale and dolphin watching', 'Coconut Tree Hill viewpoint', 'Golden sandy beaches', 'Laid-back surf culture'],
+    activities: ['Morning whale and dolphin watching cruise', 'Surf lessons for beginners', 'Sunset at Coconut Tree Hill', 'Beach hopping to Weligama', 'Fresh seafood dinners on the sand'],
+    emergencyContacts: {
+      hospital: { name: 'Matara District General Hospital', note: 'Nearest major hospital, roughly 20-25 minutes from Mirissa' },
+      policeStation: { name: 'Mirissa Police Station', note: 'Local police station serving the Mirissa beach area' },
+    },
   },
   {
     name: 'Ella',
     slug: 'ella',
     region: 'hill_country',
-    description: 'A misty mountain village surrounded by tea plantations, waterfalls and the iconic Nine Arches Bridge.',
+    description: "A misty mountain village surrounded by tea plantations, waterfalls and the iconic Nine Arches Bridge. Cooler air, panoramic ridge walks and a laid-back cafe scene make it a favourite stop for travellers making their way through the hill country.",
     image: 'https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?q=80&w=1200',
-    highlights: ['Nine Arches Bridge', 'Little Adam\'s Peak', 'Tea estate walks', 'Ravana Falls'],
+    images: [
+      'https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?q=80&w=1200',
+      'https://images.unsplash.com/photo-1571847390590-8f8ee1e7d5f5?q=80&w=1200',
+      'https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?q=80&w=1200',
+    ],
+    famousFor: ['The Nine Arches Bridge', "Little Adam's Peak", 'Rolling tea plantations', 'Ravana Falls'],
+    activities: ["Sunrise hike up Little Adam's Peak", 'Photograph a train crossing Nine Arches Bridge', 'Walk through working tea estates', 'Swim at Ravana Falls', 'Zipline over the valley'],
+    emergencyContacts: {
+      hospital: { name: 'Bandarawela District General Hospital', note: 'Nearest major hospital, roughly 30 minutes from Ella' },
+      policeStation: { name: 'Ella Police Station', note: 'Local police station serving the Ella village area' },
+    },
   },
   {
     name: 'Nuwara Eliya',
     slug: 'nuwara-eliya',
     region: 'hill_country',
-    description: "Known as 'Little England', a cool-climate hill town of manicured tea gardens and colonial-era architecture.",
-    image: 'https://images.unsplash.com/photo-1571847390590-8f8ee1e7d5f5?q=80&w=1200',
-    highlights: ['Tea factory tours', 'Gregory Lake', 'Horton Plains', 'Colonial architecture'],
+    description: "Known as 'Little England', a cool-climate hill town of manicured tea gardens and colonial-era architecture. Tudor-style cottages, a golf course and rose gardens sit at almost 2,000 metres, giving it a climate unlike anywhere else on the island.",
+    image: 'https://picsum.photos/seed/ceylon-trails-nuwara-eliya-1/1200/800',
+    images: [
+      'https://picsum.photos/seed/ceylon-trails-nuwara-eliya-1/1200/800',
+      'https://picsum.photos/seed/ceylon-trails-nuwara-eliya-2/1200/800',
+      'https://picsum.photos/seed/ceylon-trails-nuwara-eliya-3/1200/800',
+    ],
+    famousFor: ['Ceylon tea estates and factories', 'Cool colonial-era climate', 'Gregory Lake', 'Horton Plains National Park'],
+    activities: ['Tour a working tea factory and tasting room', 'Boat ride on Gregory Lake', 'Sunrise trek to World\'s End in Horton Plains', 'Stroll the Victoria Park rose gardens', 'Visit a strawberry farm'],
+    emergencyContacts: {
+      hospital: { name: 'Nuwara Eliya District General Hospital', note: 'Main government hospital in Nuwara Eliya town' },
+      policeStation: { name: 'Nuwara Eliya Police Station', note: 'Main police station for the town centre' },
+    },
   },
   {
     name: 'Sigiriya',
     slug: 'sigiriya',
     region: 'cultural_triangle',
-    description: 'Home to the ancient rock fortress rising 200 metres above the jungle, one of Sri Lanka\'s most iconic sites.',
+    description: "Home to the ancient rock fortress rising 200 metres above the jungle, one of Sri Lanka's most iconic sites. Built atop a granite monolith in the 5th century, the site combines dramatic engineering with lush water gardens at its base.",
     image: 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?q=80&w=1200',
-    highlights: ['Sigiriya Rock Fortress', 'Frescoes', 'Water gardens', 'Pidurangala Rock'],
+    images: [
+      'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?q=80&w=1200',
+      'https://images.unsplash.com/photo-1625124326157-ef5b8bfa8b3f?q=80&w=1200',
+      'https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=1200',
+    ],
+    famousFor: ['The Sigiriya Rock Fortress', 'Ancient frescoes of the "Sigiriya Damsels"', 'Symmetrical water gardens', 'Pidurangala Rock viewpoint'],
+    activities: ['Climb the rock fortress to the summit palace ruins', 'View the ancient fresco gallery', 'Sunrise hike up Pidurangala Rock for the classic view of Sigiriya', 'Explore the water and boulder gardens', 'Village tour by bullock cart'],
+    emergencyContacts: {
+      hospital: { name: 'Dambulla Base Hospital', note: 'Nearest major hospital, roughly 20 minutes from Sigiriya' },
+      policeStation: { name: 'Sigiriya Police Station', note: 'Local police station serving the Sigiriya area' },
+    },
   },
   {
     name: 'Kandy',
     slug: 'kandy',
     region: 'cultural_triangle',
-    description: "The cultural capital of Sri Lanka, home to the Temple of the Sacred Tooth Relic and a scenic lake.",
-    image: 'https://images.unsplash.com/photo-1625124326157-ef5b8bfa8b3f?q=80&w=1200',
-    highlights: ['Temple of the Tooth', 'Kandy Lake', 'Royal Botanical Gardens', 'Cultural dance shows'],
+    description: 'The cultural capital of Sri Lanka, home to the Temple of the Sacred Tooth Relic and a scenic lake. As the last capital of the ancient Sinhalese kings, Kandy remains the spiritual heart of the island and a UNESCO World Heritage city.',
+    image: 'https://picsum.photos/seed/ceylon-trails-kandy-1/1200/800',
+    images: [
+      'https://picsum.photos/seed/ceylon-trails-kandy-1/1200/800',
+      'https://picsum.photos/seed/ceylon-trails-kandy-2/1200/800',
+      'https://picsum.photos/seed/ceylon-trails-kandy-3/1200/800',
+    ],
+    famousFor: ['Temple of the Sacred Tooth Relic', 'Kandy Lake', 'Royal Botanical Gardens, Peradeniya', 'Traditional Kandyan dance'],
+    activities: ['Visit the Temple of the Tooth', 'Walk around Kandy Lake at sunset', 'Explore the Royal Botanical Gardens', 'Watch a traditional cultural dance show', 'Browse the local gem and spice markets'],
+    emergencyContacts: {
+      hospital: { name: 'National Hospital (Teaching), Kandy', note: 'Main government teaching hospital in Kandy' },
+      policeStation: { name: 'Kandy Police Station', note: 'Main police station for the Kandy city area' },
+    },
   },
   {
     name: 'Yala National Park',
     slug: 'yala',
     region: 'wildlife',
-    description: 'Sri Lanka\'s most visited national park, with one of the highest leopard densities in the world.',
+    description: "Sri Lanka's most visited national park, with one of the highest leopard densities in the world. Beyond leopards, the park's mix of scrub jungle, lagoons and coastline supports elephants, sloth bears, crocodiles and prolific birdlife.",
     image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=1200',
-    highlights: ['Leopard safaris', 'Elephants', 'Birdwatching', 'Coastal jungle'],
+    images: [
+      'https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=1200',
+      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=1200',
+      'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?q=80&w=1200',
+    ],
+    famousFor: ['One of the highest leopard densities on Earth', 'Wild elephant herds', 'Coastal jungle and lagoons', 'Prolific birdlife'],
+    activities: ['Full-day or half-day jeep safari', 'Leopard and elephant tracking with a park ranger', 'Birdwatching around the lagoons', 'Sunrise game drive', 'Stargazing from an eco-camp'],
+    emergencyContacts: {
+      hospital: { name: 'Tissamaharama Base Hospital', note: 'Nearest hospital to the Yala park entrance area' },
+      policeStation: { name: 'Tissamaharama Police Station', note: 'Nearest police station to the Yala park entrance area' },
+    },
   },
   {
     name: 'Colombo',
     slug: 'colombo',
     region: 'city',
-    description: 'The vibrant commercial capital, blending colonial architecture, rooftop bars and buzzing street food markets.',
+    description: 'The vibrant commercial capital, blending colonial architecture, rooftop bars and buzzing street food markets. A melting pot of Sri Lankan, colonial and contemporary influences, Colombo is usually the first and last stop on any island itinerary.',
     image: 'https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?q=80&w=1200',
-    highlights: ['Galle Face Green', 'Pettah Market', 'Independence Square', 'Rooftop dining'],
+    images: [
+      'https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?q=80&w=1200',
+      'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=1200',
+      'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=1200',
+    ],
+    famousFor: ['Galle Face Green oceanfront promenade', 'Pettah street markets', 'Colonial-era architecture', 'A buzzing rooftop dining scene'],
+    activities: ['Sunset stroll along Galle Face Green', 'Explore the markets and temples of Pettah', 'Visit the Gangaramaya Temple', 'Rooftop bar hopping', 'Street food tour of Sri Lankan short eats'],
+    emergencyContacts: {
+      hospital: { name: 'National Hospital of Sri Lanka', note: "The country's largest government hospital, in central Colombo" },
+      policeStation: { name: 'Colombo Fort Police Station', note: 'Main police station for the Colombo Fort / city centre area' },
+    },
   },
 ];
 
@@ -298,10 +379,10 @@ const hotels = [
 ];
 
 const testimonials = [
-  { name: 'Emma Clarke', country: 'United Kingdom', rating: 5, message: 'Our custom itinerary matched exactly what we wanted — hill country hikes and quiet beaches. Every detail was handled beautifully.' },
-  { name: 'Lukas Weber', country: 'Germany', rating: 5, message: 'The tuk-tuk itinerary through the cultural triangle was unforgettable. Authentic, flexible, and great value.' },
-  { name: 'Priya Nair', country: 'India', rating: 4, message: 'Loved the boutique villa stays on the southern coast. The whale watching add-on was a highlight for our kids.' },
-  { name: 'Sophie Martin', country: 'France', rating: 5, message: "The 'Create Your Own Itinerary' tool saved us so much planning time — it suggested a perfect van tour for our group of 6." },
+  { name: 'Emma Clarke', country: 'United Kingdom', rating: 5, message: 'Our custom itinerary matched exactly what we wanted — hill country hikes and quiet beaches. Every detail was handled beautifully.', tourCode: 'CT-DEMO-1001' },
+  { name: 'Lukas Weber', country: 'Germany', rating: 5, message: 'The tuk-tuk itinerary through the cultural triangle was unforgettable. Authentic, flexible, and great value.', tourCode: 'CT-DEMO-1002' },
+  { name: 'Priya Nair', country: 'India', rating: 4, message: 'Loved the boutique villa stays on the southern coast. The whale watching add-on was a highlight for our kids.', tourCode: 'CT-DEMO-1003' },
+  { name: 'Sophie Martin', country: 'France', rating: 5, message: "The 'Create Your Own Itinerary' tool saved us so much planning time — it suggested a perfect van tour for our group of 6.", tourCode: 'CT-DEMO-1004' },
 ];
 
 const blogPosts = [
@@ -695,7 +776,9 @@ async function seed() {
   }
 
   for (const d of destinations) {
-    await Destination.findOrCreate({ where: { slug: d.slug }, defaults: d });
+    // upsert (not findOrCreate) so re-running the seed also fills in new
+    // fields (famousFor/activities/images) on destinations that already exist.
+    await Destination.upsert(d);
   }
   console.log(`✔ Seeded ${destinations.length} destinations.`);
 

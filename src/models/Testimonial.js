@@ -28,6 +28,19 @@ const Testimonial = sequelize.define('Testimonial', {
     type: DataTypes.STRING(500),
     allowNull: true,
   },
+  tourCode: {
+    // The code from a traveler's booking/tour confirmation. Required by
+    // the public submission form (enforced in testimonialRoutes.js) and
+    // unique in the database, so a given tour code can only be used to
+    // post one review. Nullable at the DB level (rather than NOT NULL) so
+    // altering an existing table with pre-seeded/admin-added rows that
+    // predate this field doesn't fail - MySQL/MariaDB allow multiple NULLs
+    // under a UNIQUE constraint, so this doesn't weaken the "one review per
+    // code" rule for anything actually submitted through the form.
+    type: DataTypes.STRING(40),
+    allowNull: true,
+    unique: true,
+  },
 }, {
   tableName: 'testimonials',
 });

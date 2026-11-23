@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const { jsonGetter } = require('../utils/jsonField');
 
 /**
  * ItineraryTemplate represents a pre-built sample itinerary that the
@@ -26,6 +27,7 @@ const ItineraryTemplate = sequelize.define('ItineraryTemplate', {
     type: DataTypes.JSON,
     allowNull: false,
     defaultValue: [],
+    get: jsonGetter('locationTypes', []),
   },
   // One of: public_transport, tuk_tuk, car, van
   travelMode: {
@@ -63,6 +65,7 @@ const ItineraryTemplate = sequelize.define('ItineraryTemplate', {
     type: DataTypes.JSON,
     allowNull: false,
     defaultValue: [],
+    get: jsonGetter('dayPlan', []),
   },
 }, {
   tableName: 'itinerary_templates',

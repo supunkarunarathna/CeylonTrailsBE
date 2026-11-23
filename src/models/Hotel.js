@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const { jsonGetter } = require('../utils/jsonField');
 
 const Hotel = sequelize.define('Hotel', {
   id: {
@@ -41,11 +42,13 @@ const Hotel = sequelize.define('Hotel', {
     type: DataTypes.JSON,
     allowNull: true,
     defaultValue: [],
+    get: jsonGetter('amenities', []),
   },
   images: {
     type: DataTypes.JSON,
     allowNull: true,
     defaultValue: [],
+    get: jsonGetter('images', []),
   },
 }, {
   tableName: 'hotels',
